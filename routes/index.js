@@ -29,7 +29,7 @@ router.get('/getclassify', function (req, res, next) {
 
 
 router.post('/write', function (req, res, next) {
-  console.log(req.body)
+  // console.log(req.body)
   var article = new Topic(req.body)
   article.save(function (err) {
     if (err) {
@@ -41,6 +41,23 @@ router.post('/write', function (req, res, next) {
     })
   })
 })
+
+router.post('/update', function (req, res, next) {
+  // console.log(req.body.id)
+  Topic.findByIdAndUpdate({
+    _id: req.body.id
+  }, req.body, function (err, topic) {
+    if (err) {
+      return next(err)
+    }
+    res.json({
+      status: 0,
+      msg: 'update is ok'
+    })
+  })
+
+})
+
 
 router.get('/getAllArticle', function (req, res, next) {
   Topic.find((err, topics) => {
@@ -57,7 +74,7 @@ router.get('/getAllArticle', function (req, res, next) {
 })
 
 router.get('/getArticleById/:id', function (req, res, next) {
-  console.log(req.params.id)
+  // console.log(req.params.id)
   Topic.findOne({
     _id: req.params.id
   }, function (err, topic) {
@@ -73,5 +90,35 @@ router.get('/getArticleById/:id', function (req, res, next) {
   })
 })
 
+router.get('/del/:id', function (req, res, next) {
+  // console.log(req.params.id)
+  Topic.findByIdAndDelete({
+    _id: req.params.id
+  }, function (err, message) {
+    if (err) {
+      return next(err)
+    }
+    res.json({
+      status: 0,
+      msg: 'del is ok..'
+    })
+  })
+})
+
+router.get('/getDetails/:id', function (req, res, next) {
+  // console.log(req.params.id)
+  Topic.findOne({
+    _id: req.params.id
+  }, function (err, topic) {
+    if (err) {
+      return next(err)
+    }
+    res.json({
+      status: 0,
+      msg: 'getdetails is ok',
+      topic: topic
+    })
+  })
+})
 
 module.exports = router;

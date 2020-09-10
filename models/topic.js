@@ -36,7 +36,8 @@ var topicSchema = mongoose.Schema({
         type: Number
     },
     read: {
-        type: Number
+        type: Number,
+        default: 0
     }
 
 })
